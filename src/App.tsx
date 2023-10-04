@@ -1,35 +1,98 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { ChangeEvent, useState } from "react";
+import "./App.css";
+import "./style.css";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface FormData {
+  name: string;
+  email: string;
+  message: string;
 }
 
-export default App
+const App: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = () => {
+    // 送信ロジックをこちらに実装します
+    // sendDataToServer(formData);
+    alert("Data submitted!");
+  };
+
+  return (
+    <div className="container">
+      <section className="form">
+        <div className="form__item-box">
+          <label className="form__name-label" htmlFor="name">
+            Name
+          </label>
+          <input
+            type="text"
+            className="form__name"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form__item-box">
+          <label className="form__email-label" htmlFor="email">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form__email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form__item-box">
+          <label className="form__message-label" htmlFor="message">
+            Message
+          </label>
+          <textarea
+            className="form__message"
+            id="message"
+            name="message"
+            rows={5}
+            value={formData.message}
+            onChange={handleInputChange}
+          ></textarea>
+        </div>
+      </section>
+      <section id="previewSection">
+        <h2>Preview:</h2>
+        <div>
+          Name: <span>{formData.name}</span>
+        </div>
+        <div>
+          Email: <span>{formData.email}</span>
+        </div>
+        <div>
+          Message: <span>{formData.message}</span>
+        </div>
+        <div style={{ marginTop: "20px" }}>
+          <button type="button" onClick={handleSubmit}>
+            Submit
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default App;
